@@ -23,7 +23,6 @@
 #include <sys/wait.h>
 //For wait() and waitpid().
 
-
 // libft allowed
 // ft_printf allowed
 
