@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/09/19 14:30:35 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/09/23 12:20:26 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,30 +29,41 @@ unlink, wait, waitpid*/
 //		^no permissions: <filename>: Permission denied
 // 		^no cmd: error (command not found: <cmd>)
 
-int	permissions(char *infile)
+int	main(int argc, char **argv)
 {
-	if (access(infile, R_OK) == -1)
+	int infile_fd, outfile_fd;
+	if (argc != 5)
 	{
-		ft_putstr_fd(infile, 1);
-		ft_putstr_fd(": Permission denied\n", 1);
+		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
+		return (1);
 	}
-}
-
-//int main(int argc, char **argv)
-int main(int argc, char **argv)
-{
-	//ft_putstr_fd("test\n", 1);
-	void(argc);
-	int i;
-	char	*infile;
-
-	i = 0;
-	while (argv[1][i])
+	if (access(argv[1], F_OK) != 0)
 	{
-		infile[i] = argv[1][i];
-		i++;
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		return (1);
 	}
-	printf("%s", infile);
-
+	if (access(argv[1], R_OK) != 0)
+	{
+		ft_putstr_fd(argv[1], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		return (1);
+	}
+	infile_fd = open(argv[1], O_RDONLY);
+	if (infile_fd == -1)
+	{
+		perror(argv[1]);
+		return (1);
+	}
+	outfile_fd = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (outfile_fd == -1)
+	{
+		ft_putstr_fd(argv[4], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		close(infile_fd);
+		return (1);
+	}
+	close(infile_fd);
+	close(outfile_fd);
 	return (0);
 }
