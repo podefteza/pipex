@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/09/24 13:02:24 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:22:23 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	file_check(char *filename, int is_input)
 	}
 	else
 	{
-		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (fd == -1)
 		{
 			perror(filename);
@@ -54,29 +54,21 @@ int	file_check(char *filename, int is_input)
 	return (fd);
 }
 
-int	cmds(int argc, char **argv)
+int	exit_error()
 {
-	char	**cmds_input;
-	char	**cmds_output;
-
-	cmds_input = ft_split(argv[1], " ");
-
-
-
-
-
+	ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
+	exit (0);
 }
 
 int	main(int argc, char **argv)
 {
 	int	infile_fd;
 	int	outfile_fd;
+	//char	*cmd1;
+	//char	*cmd2;
 
 	if (argc != 5)
-	{
-		ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
-		return (1);
-	}
+		exit_error();
 	infile_fd = file_check(argv[1], 1);
 	if (infile_fd == -1)
 		return (1);
@@ -87,6 +79,8 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	// pipex
+	// printf("%d", infile_fd);
+	// printf("%d", outfile_fd);
 	close(infile_fd);
 	close(outfile_fd);
 	return (0);

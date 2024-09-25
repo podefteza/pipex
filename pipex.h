@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:05:02 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/09/23 13:10:15 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/09/24 13:11:58 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@
 // libft
 void	ft_putstr_fd(char *s, int fd);
 size_t	ft_strlen(const char *s);
+char	**ft_split(char const *s, char c);
 
 #endif
