@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/09/27 17:07:12 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/08 15:03:49 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ execve, exit, fork, pipe, unlink, wait, waitpid*/
 // 		^no outfile: creates it
 //		^no permissions: <filename>: Permission denied
 // 		^no cmd: error (command not found: <cmd>)
+
+// TODO: verify if possible to merge the first two functions
+// separate line 135
 
 int	file_check(char *filename, int is_input)
 {
@@ -52,10 +55,14 @@ int	file_check(char *filename, int is_input)
 	return (fd);
 }
 
-int	exit_error(void)
+int	check_file(char *file, int is_input)
 {
-	ft_putstr_fd("Usage: ./pipex infile cmd1 cmd2 outfile\n", 2);
-	exit(0);
+	int	fd;
+
+	fd = file_check(file, is_input);
+	if (fd == -1)
+		return (-1);
+	return (fd);
 }
 
 char	***cmds(char **argv)
@@ -71,102 +78,70 @@ char	***cmds(char **argv)
 	return (commands);
 }
 
-void	free_cmds(char ***commands)
+void	exec_cmd(char **cmd_args, char **envp)
 {
-	int	i;
-	int	j;
+	char	*command_path;
 
-	i = 0;
-	while (commands[i])
+	command_path = find_command(cmd_args[0], envp);
+	if (command_path)
 	{
-		j = 0;
-		while (commands[i][j])
-		{
-			free(commands[i][j]);
-			j++;
-		}
-		free(commands[i]);
-		i++;
+		execve(command_path, cmd_args, envp);
+		perror("execve failed");
+		exit(EXIT_FAILURE);
 	}
-	free(commands);
+	else
+	{
+		perror("Command not found: ");
+		exit(EXIT_FAILURE);
+	}
 }
 
-int	main(int argc, char **argv)
+void	fork_and_execute(int *fds, int *pipefd, char ***commands, char **envp)
 {
-	int		infile_fd;
-	int		outfile_fd;
+	pid_t	pid1;
+	pid_t	pid2;
+
+	pid1 = fork();
+	if (pid1 == 0)
+	{
+		dup2(fds[0], STDIN_FILENO);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		exec_cmd(commands[0], envp);
+	}
+	pid2 = fork();
+	if (pid2 == 0)
+	{
+		dup2(pipefd[0], STDIN_FILENO);
+		dup2(fds[1], STDOUT_FILENO);
+		close(pipefd[0]);
+		close(pipefd[1]);
+		exec_cmd(commands[1], envp);
+	}
+	close(pipefd[0]);
+	close(pipefd[1]);
+	wait(NULL);
+	wait(NULL);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
 	char	***commands;
-	int		i;
-	int		j;
+	int		pipefd[2];
+	int		fds[2];
 
 	if (argc != 5)
 		exit_error();
-	infile_fd = file_check(argv[1], 1);
-	if (infile_fd == -1)
+	if ((fds[0] = check_file(argv[1], 1)) == -1 || (fds[1] = check_file(argv[4],
+				0)) == -1)
 		return (1);
-	outfile_fd = file_check(argv[4], 0);
-	if (outfile_fd == -1)
-	{
-		close(infile_fd);
-		return (1);
-	}
 	commands = cmds(argv);
-
-	printf("Infile FD: %d\n", infile_fd);
-	printf("Outfile FD: %d\n", outfile_fd);
-
-	/*	*/
-	// Print the commands (for testing; remove later)
-	i = 0;
-	while (commands[i])
-	{
-		j = 0;
-		printf("cmd%d: ", i + 1);
-		while (commands[i][j])
-		{
-			printf("|%s|", commands[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-
-
-	// path for execve: create another function "create_path" for this step
-	char path1[50] = "/bin/";
-	char path2[50] = "/bin/";
-	int k = 5;
-	int w = 0;
-	while (commands[0][0][w])
-	{
-		path1[k] = commands[0][0][w];
-		w++;
-		k++;
-	}
-	path1[k] = '\0';
-	k = 5;
-	w = 0;
-	while (commands[1][0][w])
-	{
-		path2[k] = commands[1][0][w];
-		w++;
-		k++;
-	}
-	path2[k] = '\0';
-	printf("path1: |%s|\n", path1);
-	printf("path2: |%s|\n", path2);
-	// end of create_path
-
-	execve(path1, commands[0], NULL);
-	//execve(path2, commands[1], NULL);
-
-	// pipe
-	//dup2(infile_fd, STDOUT_FILENO);
-
-
-	// create a function free_and_exit
+	if (pipe(pipefd) == -1)
+		exit_error();
+	fork_and_execute(fds, pipefd, commands, envp);
 	free_cmds(commands);
-	close(infile_fd);
-	close(outfile_fd);
+	close(fds[0]);
+	close(fds[1]);
 	return (0);
 }
