@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:20:21 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/08 14:23:52 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/09 14:22:30 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*find_command(char *cmd, char **envp)
 	int		i;
 	int		j;
 	char	dir[1024];
+
+	path = NULL;
 
 	full_path = malloc(1024);
 	if (!full_path)
@@ -50,7 +52,7 @@ char	*find_command(char *cmd, char **envp)
 			ft_strlcat(full_path, "/", 1024); // Append '/'
 			ft_strlcat(full_path, cmd, 1024); // Append command
 			// Print the full path being tried
-			printf("Trying path: %s\n", full_path);
+			//printf("Trying path: %s\n", full_path);
 			// Check if the command is executable
 			if (access(full_path, X_OK) == 0)
 				return (full_path); // Found the executable
