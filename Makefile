@@ -6,7 +6,7 @@
 #    By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/27 14:02:56 by carlos-j          #+#    #+#              #
-#    Updated: 2024/10/08 14:26:20 by carlos-j         ###   ########.fr        #
+#    Updated: 2024/10/11 10:31:31 by carlos-j         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS = pipex.c \
 		libft/ft_strjoin.c \
 		libft/ft_strncmp.c \
 		libft/ft_strlcat.c \
-		libft/ft_strlcpy.c
+		libft/ft_strlcpy.c \
+		libft/ft_strchr.c
 
 OBJS = ${SRCS:.c=.o}
 

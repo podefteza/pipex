@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 14:25:34 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/11 08:57:06 by carlos-j         ###   ########.fr       */
+/*   Created: 2024/04/15 17:17:13 by carlos-j          #+#    #+#             */
+/*   Updated: 2024/10/11 10:31:38 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+// Locates the first occurrence of c in string.
 
-void	free_cmds(char ***commands)
+#include "../pipex.h"
+
+char	*ft_strchr(const char *s, int c)
 {
-	int	i;
-	int	j;
+	int	len;
 
-	i = 0;
-	while (commands[i])
+	len = ft_strlen(s) + 1;
+	while (len > 0)
 	{
-		j = 0;
-		while (commands[i][j])
-		{
-			free(commands[i][j]);
-			j++;
-		}
-		free(commands[i]);
-		i++;
+		if (*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
+		len--;
 	}
-	free(commands);
-}
-
-int	exit_error(void)
-{
-	ft_putstr_fd("Usage: ./pipex \"infile\" \"cmd1\" \"cmd2\" \"outfile\"\n",
-		2);
-	exit(0);
+	if (c == '\0')
+		return ((char *)s);
+	return (NULL);
 }
