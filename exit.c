@@ -6,11 +6,17 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:34 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/11 08:57:06 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/12 10:59:05 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	close_fds(int fd1, int fd2)
+{
+	close(fd1);
+	close(fd2);
+}
 
 void	free_cmds(char ***commands)
 {

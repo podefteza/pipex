@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:05:02 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/11 10:31:26 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/12 11:55:32 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,5 +37,10 @@ char	*find_command(char *cmd, char **envp);
 // exit
 void	free_cmds(char ***commands);
 int		exit_error(void);
+void	close_fds(int fd1, int fd2);
+
+// args_checker
+int		file_check(char *filename, int is_input);
+char	***cmds(char **argv);
 
 #endif

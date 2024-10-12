@@ -6,78 +6,99 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:20:21 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/11 10:46:02 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/12 11:36:02 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*find_command(char *cmd, char **envp)
+// Check if the cmd is given as a path already
+char	*cmd_is_path(char *cmd)
 {
-	char	*path;
 	char	*full_path;
-	int		i;
-	int		j;
-	char	dir[1024];
 
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, X_OK) == 0)
 		{
-			full_path = malloc(strlen(cmd) + 1);
+			full_path = malloc(ft_strlen(cmd) + 1);
 			if (full_path)
-				ft_strlcpy(full_path, cmd, strlen(cmd) + 1);
+				ft_strlcpy(full_path, cmd, ft_strlen(cmd) + 1);
 			return (full_path);
 		}
-		else
-			return (NULL);
+		return (NULL);
 	}
-	full_path = malloc(1024);
+	return (NULL);
+}
+
+// Build the full path from directory and command
+char	*build_path(char *dir, char *cmd)
+{
+	char	*full_path;
+
+	full_path = malloc(ft_strlen(dir) + ft_strlen(cmd) + 2);
 	if (!full_path)
 		return (NULL);
-	// Find PATH in envp using while loop
+	ft_strlcpy(full_path, dir, ft_strlen(dir) + 1);
+	ft_strlcat(full_path, "/", ft_strlen(dir) + 2);
+	ft_strlcat(full_path, cmd, ft_strlen(dir) + ft_strlen(cmd) + 2);
+	if (access(full_path, X_OK) == 0)
+		return (full_path);
+	free(full_path);
+	return (NULL);
+}
+
+// Find the PATH variable in the environment
+char	*get_path_from_env(char **envp)
+{
+	int	i;
+
 	i = 0;
-	while (envp[i] != NULL)
+	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path = envp[i] + 5; // Skip "PATH="
-			break ;
-		}
+			return (envp[i] + 5);
 		i++;
 	}
-	if (path == NULL)
-	{
-		free(full_path);
-		return (NULL);
-	}
+	return (NULL);
+}
+
+// Iterate over directories in PATH and find the command
+char	*search_in_path(char *path, char *cmd)
+{
+	char	dir[1024];
+	int		j;
+	char	*full_path;
+
 	j = 0;
 	while (*path)
 	{
 		if (*path == ':')
 		{
-			dir[j] = '\0'; // Terminate the current directory string
-			// Build the full path
-			ft_strlcpy(full_path, dir, 1024); // Copy directory to full_path
-			ft_strlcat(full_path, "/", 1024); // Append '/'
-			ft_strlcat(full_path, cmd, 1024); // Append command
-			// Check if the command is executable
-			if (access(full_path, X_OK) == 0)
-				return (full_path); // Found the executable
-			// Reset the directory buffer index for the next directory
+			dir[j] = '\0';
+			full_path = build_path(dir, cmd);
+			if (full_path)
+				return (full_path);
 			j = 0;
 		}
 		else
-			dir[j++] = *path; // Store the character in the directory buffer
+			dir[j++] = *path;
 		path++;
 	}
-	// Handle the last directory after the loop
-	dir[j] = '\0';                    // Terminate the last directory string
-	ft_strlcpy(full_path, dir, 1024); // Copy last directory to full_path
-	ft_strlcat(full_path, "/", 1024); // Append '/'
-	ft_strlcat(full_path, cmd, 1024); // Append command
-	if (access(full_path, X_OK) == 0)
-		return (full_path); // Found the executable
-	free(full_path);
-	return (NULL); // Command not found
+	dir[j] = '\0';
+	return (build_path(dir, cmd));
+}
+
+char	*find_command(char *cmd, char **envp)
+{
+	char	*path;
+	char	*full_path;
+
+	full_path = cmd_is_path(cmd);
+	if (full_path)
+		return (full_path);
+	path = get_path_from_env(envp);
+	if (!path)
+		return (NULL);
+	return (search_in_path(path, cmd));
 }
