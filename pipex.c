@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/12 12:15:01 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/12 14:28:42 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,16 @@ void	exec_cmd(char **cmd_args, char **envp, char ***commands)
 	}
 }
 
-void	execute_processes(int fd_in, int fd_out, char **cmd, char **envp,
-		char ***commands, int *pipe_fds)
+void	execute_processes(char **cmd, char **envp, char ***commands,
+		int *pipe_fds)
 {
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd_out, STDOUT_FILENO);
 	close_fds(pipe_fds[0], pipe_fds[1]);
 	exec_cmd(cmd, envp, commands);
 	exit(EXIT_FAILURE);
 }
 
-void	fork_processes(int *fds, int *pipe_fds, char ***commands, char **envp)
+void	fork_processes(int *in_out_fds, int *pipe_fds, char ***commands,
+		char **envp)
 {
 	pid_t	pid1;
 	pid_t	pid2;
@@ -59,12 +58,18 @@ void	fork_processes(int *fds, int *pipe_fds, char ***commands, char **envp)
 
 	pid1 = fork();
 	if (pid1 == 0)
-		execute_processes(fds[0], pipe_fds[1], commands[0], envp, commands,
-			pipe_fds);
+	{
+		dup2(in_out_fds[0], STDIN_FILENO);
+		dup2(pipe_fds[1], STDOUT_FILENO);
+		execute_processes(commands[0], envp, commands, pipe_fds);
+	}
 	pid2 = fork();
 	if (pid2 == 0)
-		execute_processes(pipe_fds[0], fds[1], commands[1], envp, commands,
-			pipe_fds);
+	{
+		dup2(pipe_fds[0], STDIN_FILENO);
+		dup2(in_out_fds[1], STDOUT_FILENO);
+		execute_processes(commands[1], envp, commands, pipe_fds);
+	}
 	close_fds(pipe_fds[0], pipe_fds[1]);
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
