@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/12 14:28:42 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:57:31 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ int	main(int argc, char **argv, char **envp)
 		exit_error();
 	in_out_fds[0] = file_check(argv[1], 1);
 	in_out_fds[1] = file_check(argv[4], 0);
-	if (in_out_fds[0] == -1 || in_out_fds[1] == -1)
-		return (1);
 	commands = cmds(argv);
 	if (!commands)
 	{
@@ -105,12 +103,3 @@ int	main(int argc, char **argv, char **envp)
 	close_fds(in_out_fds[0], in_out_fds[1]);
 	return (0);
 }
-
-/*
-# 04: The program does not crash with no parameters                         [OK]
-# 05: The program does not crash with one parameter                         [OK]
-# 06: The program does not crash with two parameters                        [OK]
-# 07: The program does not crash with three parameters                      [OK]
-# 09: The program handles infile's open error                               [OK]
-# 10: The output when infile's open error occur is correct                  [OK]
-*/

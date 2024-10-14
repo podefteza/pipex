@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:34 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/12 10:59:05 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/14 10:46:30 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ int	exit_error(void)
 {
 	ft_putstr_fd("Usage: ./pipex \"infile\" \"cmd1\" \"cmd2\" \"outfile\"\n",
 		2);
-	exit(0);
+	exit(1);
 }
