@@ -6,11 +6,11 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 11:11:27 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/14 10:40:10 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:38:52 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 int	file_check(char *filename, int is_input)
 {

@@ -6,7 +6,7 @@
 #    By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/27 14:02:56 by carlos-j          #+#    #+#              #
-#    Updated: 2024/10/12 11:11:55 by carlos-j         ###   ########.fr        #
+#    Updated: 2024/10/16 09:49:06 by carlos-j         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,17 +14,18 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = pipex.c \
-		path.c \
-		exit.c \
-		args_checker.c \
 		libft/ft_putstr_fd.c \
 		libft/ft_split.c \
-		libft/ft_strlen.c \
+		libft/ft_strchr.c \
 		libft/ft_strjoin.c \
-		libft/ft_strncmp.c \
 		libft/ft_strlcat.c \
 		libft/ft_strlcpy.c \
-		libft/ft_strchr.c
+		libft/ft_strlen.c \
+		libft/ft_strncmp.c \
+		utils/args_checker.c \
+		utils/exec.c \
+		utils/exit.c \
+		utils/path.c
 
 OBJS = ${SRCS:.c=.o}
 

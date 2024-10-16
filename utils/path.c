@@ -6,11 +6,11 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:20:21 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/12 11:36:02 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/16 09:42:34 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../pipex.h"
 
 // Check if the cmd is given as a path already
 char	*cmd_is_path(char *cmd)
