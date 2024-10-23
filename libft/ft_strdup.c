@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 15:56:59 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/18 15:59:03 by carlos-j         ###   ########.fr       */
+/*   Created: 2024/04/17 14:22:12 by carlos-j          #+#    #+#             */
+/*   Updated: 2024/10/18 14:12:40 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* The strlcpy() function copies up to size - 1 characters from the
-NUL-terminated string src to dst, NUL-terminating the result. */
+/* Returns a pointer to a null-terminated byte string, which is a duplicate of
+the string pointed to by s. */
 
 #include "../pipex.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+char	*ft_strdup(const char *s)
 {
-	size_t	i;
+	char	*dest;
 
+	int (size);
+	int (i);
+	size = ft_strlen(s) + 1;
 	i = 0;
-	if (size == 0)
-		return (ft_strlen(src));
-	while (src[i] != '\0' && i < (size - 1))
+	dest = (char *)malloc(sizeof(char) * size);
+	if (dest == NULL)
+		return (NULL);
+	while (s[i])
 	{
-		dst[i] = src[i];
+		dest[i] = s[i];
 		i++;
 	}
-	if (size != 0)
-		dst[i] = '\0';
-	while (src[i] != '\0')
-		i++;
-	return (i);
+	dest[i] = '\0';
+	return (dest);
 }

@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 13:05:02 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/16 09:42:40 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:42:59 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
@@ -32,10 +33,10 @@ size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // ./utils/args_checker/
-int		file_check(char *filename, int is_input);
 char	***cmds(char **argv);
 
 // ./utils/exec/
+void	cmd1_not_found(char *cmd_name);
 void	cmd_not_found(char *cmd_name, char ***commands);
 void	exec_cmd(char **cmd_args, char **envp, char ***commands);
 void	execute_processes(char **cmd, char **envp, char ***commands,
@@ -47,6 +48,11 @@ void	fork_processes(int *in_out_fds, int *pipe_fds, char ***commands,
 void	close_fds(int fd1, int fd2);
 void	free_cmds(char ***commands);
 int		exit_error(void);
+
+// ./utils/initial_checks/
+int		file_check(char *filename, int is_input);
+char	***initialize_commands(char **argv);
+void	cmd2_not_found(char *cmd2_path, char ***commands, char **envp);
 
 // ./utils/path/
 char	*cmd_is_path(char *cmd);

@@ -6,11 +6,18 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:32:17 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/16 09:39:58 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:31:30 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
+
+void	cmd1_not_found(char *cmd_name)
+{
+	ft_putstr_fd("Command not found: ", 2);
+	ft_putstr_fd(cmd_name, 2);
+	ft_putstr_fd("\n", 2);
+}
 
 void	cmd_not_found(char *cmd_name, char ***commands)
 {
@@ -70,7 +77,6 @@ void	fork_processes(int *in_out_fds, int *pipe_fds, char ***commands,
 	close_fds(pipe_fds[0], pipe_fds[1]);
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
-	free_cmds(commands);
 	if (status2 != 0)
 		exit(status2 >> 8);
 }

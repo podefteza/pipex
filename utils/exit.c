@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:25:34 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/16 09:40:55 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:40:07 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	free_cmds(char ***commands)
 	int	i;
 	int	j;
 
+	if (!commands)
+		return ;
 	i = 0;
 	while (commands[i])
 	{
