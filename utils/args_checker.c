@@ -6,28 +6,14 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 11:11:27 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/23 13:35:39 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/24 11:16:43 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-/*
-// debug... delete later...
-void	print_commands(char ***commands)
-{
-	int		i;
-	char	***commands;
-
-	i = 0;
-	printf("=================== DEBUG ===================\n");
-	for (i = 0; commands[0][i]; i++)
-		printf("Command 0 | %d: %s\n", i, commands[0][i]);
-	for (i = 0; commands[1][i]; i++)
-		printf("Command 1 | %d: %s\n", i, commands[1][i]);
-}*/
-
-void	strip_quotes_from_arguments(char **args)
+/* removes surrounding quotes */
+void	remove_quotes(char **args)
 {
 	int		i;
 	size_t	len;
@@ -52,10 +38,12 @@ void	strip_quotes_from_arguments(char **args)
 	}
 }
 
-char	*merge_after_strip(char *merged_command, char **args, int i)
+/* merges the current argument with the existing merged commands, adding a space
+between them. if the current command ends with a quote, it removes them
+from the start and end */
+char	*merge_between_quotes(char *merged_command, char **args, int i)
 {
 	char	*temp;
-	char	*final_stripped;
 
 	temp = malloc(ft_strlen(merged_command) + ft_strlen(args[i]) + 2);
 	if (temp)
@@ -66,59 +54,64 @@ char	*merge_after_strip(char *merged_command, char **args, int i)
 		free(merged_command);
 		merged_command = temp;
 	}
-	if (args[i][ft_strlen(args[i]) - 1] == '\'')
+	if (args[i][ft_strlen(args[i]) - 1] == '\''
+	|| (args[i][ft_strlen(args[i]) - 1] == '\"'))
 	{
-		final_stripped = malloc(ft_strlen(merged_command) - 1);
-		if (final_stripped)
+		temp = malloc(ft_strlen(merged_command) - 1);
+		if (temp)
 		{
-			ft_strlcpy(final_stripped, merged_command + 1,
+			ft_strlcpy(temp, merged_command + 1,
 				ft_strlen(merged_command) - 1);
 			free(merged_command);
-			merged_command = final_stripped;
+			merged_command = temp;
 		}
 		return (merged_command);
 	}
 	return (merged_command);
 }
 
-char	*merge_quoted_arguments(char **args)
+/* combines arguments into a single command string if they are enclosed in
+quotes, removing the quotes from the arguments.*/
+char	*combine_quoted_arguments(char **args)
 {
 	char	*merged_command;
 	int		i;
 
 	merged_command = NULL;
 	i = 0;
-	strip_quotes_from_arguments(args);
+	remove_quotes(args);
 	while (args[i])
 	{
-		if (args[i][0] == '\'' && !merged_command)
+		if ((args[i][0] == '\'' && !merged_command)
+		|| (args[i][0] == '\"' && !merged_command))
 			merged_command = ft_strdup(args[i]);
 		else if (merged_command)
-			merged_command = merge_after_strip(merged_command, args, i);
+			merged_command = merge_between_quotes(merged_command, args, i);
 		i++;
 	}
 	return (merged_command);
 }
 
+/* initializes the array of commands and merge them, if needed */
 char	***cmds(char **argv)
 {
 	char	***commands;
 	char	*merged_command;
-	int		j;
+	int		i;
 
 	commands = initialize_commands(argv);
 	if (!commands)
 		return (NULL);
-	strip_quotes_from_arguments(commands[0]);
-	merged_command = merge_quoted_arguments(commands[1]);
+	remove_quotes(commands[0]);
+	merged_command = combine_quoted_arguments(commands[1]);
 	if (merged_command)
 	{
-		j = 1;
-		while (commands[1][j])
+		i = 1;
+		while (commands[1][i])
 		{
-			free(commands[1][j]);
-			commands[1][j] = NULL;
-			j++;
+			free(commands[1][i]);
+			commands[1][i] = NULL;
+			i++;
 		}
 		commands[1][1] = merged_command;
 		commands[1][2] = NULL;

@@ -6,7 +6,7 @@
 #    By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/27 14:02:56 by carlos-j          #+#    #+#              #
-#    Updated: 2024/10/23 13:44:03 by carlos-j         ###   ########.fr        #
+#    Updated: 2024/10/24 09:19:30 by carlos-j         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 SRCS = pipex.c \
+		libft/ft_atoi.c \
 		libft/ft_putstr_fd.c \
 		libft/ft_split.c \
 		libft/ft_strchr.c \
@@ -26,6 +27,7 @@ SRCS = pipex.c \
 		utils/args_checker.c \
 		utils/exec.c \
 		utils/exit.c \
+		utils/file_check.c \
 		utils/initial_checks.c \
 		utils/path.c
 

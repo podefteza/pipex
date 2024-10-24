@@ -1,48 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   file_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 14:25:34 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/23 15:35:26 by carlos-j         ###   ########.fr       */
+/*   Created: 2024/10/23 17:04:18 by carlos-j          #+#    #+#             */
+/*   Updated: 2024/10/23 17:09:28 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-void	close_fds(int fd1, int fd2)
+int	infile_check(char *filename)
 {
-	close(fd1);
-	close(fd2);
-}
+	int	fd;
 
-void	free_cmds(char ***commands)
-{
-	int	i;
-	int	j;
-
-	if (!commands)
-		return ;
-	i = 0;
-	while (commands[i])
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
 	{
-		j = 0;
-		while (commands[i][j])
+		perror(filename);
+		fd = open("/dev/null", O_RDONLY);
+		if (fd == -1)
 		{
-			free(commands[i][j]);
-			j++;
+			perror("/dev/null");
+			exit(EXIT_FAILURE);
 		}
-		free(commands[i]);
-		i++;
 	}
-	free(commands);
+	return (fd);
 }
 
-int	exit_error(void)
+int	outfile_check(char *filename)
 {
-	ft_putstr_fd("Usage: ./pipex \"infile\" \"cmd1\" \"cmd2\" \"outfile\"\n",
-		2);
-	exit(1);
+	int	fd;
+
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (fd == -1)
+	{
+		perror(filename);
+		exit(EXIT_FAILURE);
+	}
+	return (fd);
 }

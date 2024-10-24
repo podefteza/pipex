@@ -6,27 +6,11 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 09:32:17 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/23 13:31:30 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:52:08 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
-
-void	cmd1_not_found(char *cmd_name)
-{
-	ft_putstr_fd("Command not found: ", 2);
-	ft_putstr_fd(cmd_name, 2);
-	ft_putstr_fd("\n", 2);
-}
-
-void	cmd_not_found(char *cmd_name, char ***commands)
-{
-	ft_putstr_fd("Command not found: ", 2);
-	ft_putstr_fd(cmd_name, 2);
-	ft_putstr_fd("\n", 2);
-	free_cmds(commands);
-	exit(127);
-}
 
 void	exec_cmd(char **cmd_args, char **envp, char ***commands)
 {

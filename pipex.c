@@ -6,7 +6,7 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 14:57:18 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/23 13:53:02 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/10/24 09:31:01 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc != 5)
 		exit_error();
-	in_out_fds[0] = file_check(argv[1], 1);
-	in_out_fds[1] = file_check(argv[4], 0);
+	in_out_fds[0] = infile_check(argv[1]);
+	in_out_fds[1] = outfile_check(argv[4]);
 	commands = cmds(argv);
 	if (!commands)
 		return (1);
