@@ -1,4 +1,4 @@
-# pipex
+# 🔗 pipex
 
 `pipex` is a custom implementation of Unix-like piping, designed to create a pipeline between two commands, emulating a simple shell piping mechanism. This program leverages processes, pipes, and file descriptors for efficient data transfer, allowing two commands to run sequentially, where the output of the first command serves as the input for the second command.
 
