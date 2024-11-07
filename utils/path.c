@@ -6,13 +6,12 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:20:21 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/16 09:42:34 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/11/07 09:45:28 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-// Check if the cmd is given as a path already
 char	*cmd_is_path(char *cmd)
 {
 	char	*full_path;
@@ -31,7 +30,6 @@ char	*cmd_is_path(char *cmd)
 	return (NULL);
 }
 
-// Build the full path from directory and command
 char	*build_path(char *dir, char *cmd)
 {
 	char	*full_path;
@@ -48,7 +46,6 @@ char	*build_path(char *dir, char *cmd)
 	return (NULL);
 }
 
-// Find the PATH variable in the environment
 char	*get_path_from_env(char **envp)
 {
 	int	i;
@@ -63,7 +60,6 @@ char	*get_path_from_env(char **envp)
 	return (NULL);
 }
 
-// Iterate over directories in PATH and find the command
 char	*search_in_path(char *path, char *cmd)
 {
 	char	dir[1024];

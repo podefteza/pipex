@@ -6,13 +6,12 @@
 /*   By: carlos-j <carlos-j@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 11:11:27 by carlos-j          #+#    #+#             */
-/*   Updated: 2024/10/24 11:16:43 by carlos-j         ###   ########.fr       */
+/*   Updated: 2024/11/07 09:44:58 by carlos-j         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
 
-/* removes surrounding quotes */
 void	remove_quotes(char **args)
 {
 	int		i;
@@ -38,9 +37,6 @@ void	remove_quotes(char **args)
 	}
 }
 
-/* merges the current argument with the existing merged commands, adding a space
-between them. if the current command ends with a quote, it removes them
-from the start and end */
 char	*merge_between_quotes(char *merged_command, char **args, int i)
 {
 	char	*temp;
@@ -70,8 +66,6 @@ char	*merge_between_quotes(char *merged_command, char **args, int i)
 	return (merged_command);
 }
 
-/* combines arguments into a single command string if they are enclosed in
-quotes, removing the quotes from the arguments.*/
 char	*combine_quoted_arguments(char **args)
 {
 	char	*merged_command;
@@ -92,7 +86,6 @@ char	*combine_quoted_arguments(char **args)
 	return (merged_command);
 }
 
-/* initializes the array of commands and merge them, if needed */
 char	***cmds(char **argv)
 {
 	char	***commands;
