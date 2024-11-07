@@ -4,35 +4,17 @@
 
 ## Table of Contents
 1. [Overview](#overview)
-2. [Project Flow](#project-flow)
-3. [Installation](#installation)
-4. [Usage](#usage)
-5. [Program Details](#program-details)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Program Details](#program-details)
 
 ## Overview
 
 The core of `pipex` relies on key Unix concepts:
 
-- **Processes**: Independent instances of a program that can execute in parallel.
-- **Pipes**: Temporary memory buffers for inter-process communication, allowing data to be passed efficiently between processes.
-- **File Descriptors**: Numerical handles to open files, such as `stdin` (0), `stdout` (1), and `stderr` (2).
-- **STDIN_FILENO and STDOUT_FILENO**: Defined in `<unistd.h>`, these macros are commonly used for I/O redirection.
-
-## Project Flow
-
-This project uses two separate child processes to execute two commands in sequence, using pipes for data transfer:
-
-1. **First Command**:
-   - A child process is created to execute the first command.
-   - The `dup2()` function redirects `STDIN_FILENO` to the input file (`infile`) and `STDOUT_FILENO` to the pipe’s write end.
-   - The command output is directed into the pipe.
-
-2. **Second Command**:
-   - A second child process executes the second command.
-   - `STDIN_FILENO` is redirected to the pipe’s read end, and `STDOUT_FILENO` is redirected to the output file (`outfile`).
-   - This command reads the first command’s output from the pipe and writes the final result to `outfile`.
-
-This setup mimics a shell pipe, allowing the first command’s output to be passed directly as input to the second command.
+- **pipe**: creates a one-way communication channel between two processes. It has two ends: one for reading and one for writing.
+- **fork:** creates a child process by making an exact copy of the parent process. The child process inherits open file descriptors from the parent, including those for reading and writing. By using `dup2()` in the child process, we can redirect file descriptors to specify where the child reads from or writes to - for instance, redirecting `stdin` to read from the input file or `stdout` to write to a pipe.
+- **execve**: runs a command in the process (child or parent) by replacing the current code in that process with the command's code. Once execve is called, the process stops being a copy and becomes the new command, reading from and writing to wherever the file descriptors are directed.
 
 ## Installation
 
