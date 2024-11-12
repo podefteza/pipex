@@ -7,6 +7,7 @@
 2. [Installation](#installation)
 3. [Usage](#usage)
 4. [Program Details](#program-details)
+5. [Peer Evaluations](#peer-evaluations)
 
 ## Overview
 
@@ -110,3 +111,13 @@ Finally, the program closes pipes, waits for processes to complete, and returns 
 - Displays error messages for file or permission issues.
 - Handles cases where commands are not found by checking command paths and arguments.
 - Exits with an appropriate status, including handling cases where both commands are invalid.
+
+## Peer Evaluations
+**Evaluated by d*******: 100%  
+🗣️ "Carlos did a great job with this project. He explained his thought process and showed me how the program works. It passed all the tests that I made. Keep going and good luck!"
+
+**Evaluated by m*******: 100%  
+🗣️ "Carlos did a good job in this project, I made several tests and the program handled everything. I asked about the code and he managed to explain everything. Good luck :)"
+
+**Evaluated by h*******: 100%  
+🗣️ "Excellent explanation, all questions were answered, good job."
